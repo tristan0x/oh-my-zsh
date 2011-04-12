@@ -1,5 +1,4 @@
-
-require_tool_version_compare ()
+__require_tool_version_compare () 
 {
   (
     # Locally ignore failures, otherwise we'll exit whenever $1 and $2
@@ -72,20 +71,33 @@ awk_strverscmp='
 }
 
 
-function require_tool_fatal {
+__require_tool_fatal () 
+{
     echo $@ >/dev/stderr
     return 1
 }
 
+# Usage: require_tool program version
+# Returns: 0 if $1 version if greater equals than $2, 1 otherwise.
+# In case of error, message is written on error output.
+#
+# Example: require_tool gcc 4.6
+# Use GCC environment variable if defined instead of lookup for the tool
+# in the environment.
 require_tool ()
 {
   envvar_name=$(echo $1 | tr '[:lower:]' '[:upper:]')
   tool=$(printenv $envvar_name || echo $1)
-  local version=$($tool --version | \
+  local version=$($tool --version 2>/dev/null| \
     sed -n 's/.*[^0-9.]\([0-9][0-9.]*\).*/\1/p;q')
-  test x"$version" != x ||
-    require_tool_fatal "$tool is required"
-  case $(require_tool_version_compare "$2" "$version") in
-    '>') require_tool_fatal "$1 $2 or better is required: this is $tool $version";;
+  if test x"$version" = x ; then
+      echo "$tool is required" >/dev/stderr
+      return 1
+  fi
+  case $(__require_tool_version_compare "$2" "$version") in
+    '>') 
+	  echo "$1 $2 or better is required: this is $tool $version" >/dev/stderr
+	  return 1
+	  ;;
   esac
 }
