@@ -40,3 +40,5 @@ function svn_dirty_choose {
 function svn_dirty {
     svn_dirty_choose $ZSH_THEME_SVN_PROMPT_DIRTY $ZSH_THEME_SVN_PROMPT_CLEAN
 }
+
+alias svndiff='svn diff --diff-cmd "`which diff`" -x "-w -u"'
