@@ -6,3 +6,6 @@ if type emacs >/dev/null 2>&1 ; then
 	alias emacs_frame='emacsclient --alternate-editor "" --create-frame'
     fi
 fi
+
+alias emasc=emacs
+alias emcas=emacs
