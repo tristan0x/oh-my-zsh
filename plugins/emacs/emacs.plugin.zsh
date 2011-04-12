@@ -1,7 +1,7 @@
 if ! type require_tool >/dev/null 2>&1 ; then
     cat <<EOF >/dev/stderr
-Error: emacs plugin requires plugin require_tool.
-Please enable it in your ~/.zshrc
+Error: emacs plugin needs plugin require_tool.
+Please enable it in your ~/.zshrc (and put it before emacs)
 EOF
     read
     exit 1

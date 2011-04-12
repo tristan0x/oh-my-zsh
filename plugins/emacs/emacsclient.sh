@@ -1,6 +1,8 @@
 #!/bin/sh
 
-x=`emacsclient -a '' -e '(x-display-list)' 2>/dev/null`
+# Starts emacs daemon if not already started.
+
+x=`emacsclient --alternate-editor '' --eval '(x-display-list)' 2>/dev/null`
 if [ -z "$x" ] ;then
     emacsclient --alternate-editor "" --create-frame $@
 else
